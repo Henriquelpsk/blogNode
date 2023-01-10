@@ -1,0 +1,20 @@
+<%- include('../partials/header') %>
+	<% posts.forEach((post)=> { %>
+		<div class="card mb-4">
+			<div class="card-body">
+				<h3>
+					<%= post.title%>
+				</h3>
+				<p>
+					<%= post.description%>
+				</p>
+				<a href="/postagem/<%=post.slug%>"><button class="btn btn-primary">Ler mais</button></a>
+				<div class="mt-3">
+					<small>Tag: <%=post.category.name%></small>
+					<small>Data: <%=post.date%></small>
+				</div>
+			</div>
+		</div>
+		<% }) %>
+
+			<%- include('../partials/footer') %>

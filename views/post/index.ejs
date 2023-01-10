@@ -1,0 +1,12 @@
+<%- include('../partials/header') %>
+	<div class="card">
+		<div class="card-body">
+			<h1><%=post.title %></h1>
+			<hr>
+			<small>Data de publicação: <%=post.date%></small>
+			<hr>
+			<p><%= post.content %></p>
+		</div>
+	</div>
+
+	<%- include('../partials/footer') %>

@@ -1,0 +1,29 @@
+<%- include('../partials/header') %>
+	<div class="container-fluid py-5 d-flex flex-column align-items-center border">
+		<h1 class="display-5 fw-bold">Bem vindo ao blog do node</h1>
+		<p class="col-md-8 fs-4">Projeto desenvolvido com Node + Express + MongoDB + Bootstrap.</p>
+		<hr>
+		<p>Sinta-se livre para testar o programa!</p>
+		<a href="/usuario/registro"><button class="btn btn-primary btn-lg" type="button">Crie uma conta</button></a>
+	</div>
+	<div class="container-fluid py-5">
+		<h2>Postagens recentes:</h2>
+		<% posts.forEach((post)=> { %>
+			<div class="card mb-3">
+				<div class="card-body">
+					<h3>
+						<%= post.title%>
+					</h3>
+					<p>
+						<%= post.description%>
+					</p>
+					<a href="/postagem/<%=post.slug%>"><button class="btn btn-primary">Ler mais</button></a>
+					<div class="mt-3">
+						<small>Tag: <%=post.category.name%></small>
+						<small>Data: <%=post.date%></small>
+					</div>
+				</div>
+			</div>
+			<%})%>
+	</div>
+	<%- include('../partials/footer') %>

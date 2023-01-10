@@ -1,0 +1,27 @@
+<%- include('../partials/header') %>
+	<h2>Lista de postagens: </h2>
+	<a href="/admin/postagens/add"><button class="btn btn-success">Nova Postagem</button></a>
+	<hr>
+	<% posts.forEach((post)=> { %>
+		<div class="card mb-3">
+			<div class="card-body">
+				<h4>
+					<%=post.title%>
+				</h4>
+				<p>Descrição: <%= post.description%>
+				</p>
+				<small>Slug: <%=post.slug%></small><br>
+				<small>Data: <%= post.date%></small><br>
+				<small>Categoria: <%= post.category.name%></small><br>
+				<div class="d-flex mt-4">
+					<a href="/admin/postagens/edit/<%=post._id%>"><button class="btn btn-primary">editar</button></a>
+					<form action="/admin/postagens/delete" method="post">
+						<input type="hidden" name="id" value="<%=post._id%>">
+						<button class="btn btn-danger">excluir</button>
+					</form>
+				</div>
+
+			</div>
+		</div>
+		<% }); %>
+			<%- include('../partials/footer') %>

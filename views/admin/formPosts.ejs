@@ -1,0 +1,34 @@
+<%- include('../partials/header') %>
+
+	<% errors.forEach((err)=> { %>
+		<div class="alert alert-danger">
+			<%= err.text %>
+		</div>
+		<% }); %>
+			<h3>Nova Postagem: </h3>
+			<div class="card">
+				<div class="card-body">
+					<form action="/admin/postagens/add" method="post">
+						<label for="title">Titulo:</label>
+						<input type="text" id="title" name="title" class="form-control">
+						<label for="slug">Slug: </label>
+						<input type="text" id="slug" name="slug" class="form-control">
+						<label for="description">Descrição: </label>
+						<input type="text" id="description" name="description" class="form-control">
+						<label for="content">Conteudo: </label>
+						<textarea name="content" id="content" cols="30" rows="10" class="form-control"></textarea>
+						<label for="category">Categoria: </label>
+						<select name="category" id="category" class="form-control">
+							<% categories.forEach((category)=> { %>
+								<option value="<%=category._id%>">
+									<%=category.name%>
+								</option>
+								<% }); %>
+						</select>
+						<br>
+						<button class="btn btn-success" type="submit">Criar Post</button>
+					</form>
+				</div>
+			</div>
+
+			<%- include('../partials/footer') %>

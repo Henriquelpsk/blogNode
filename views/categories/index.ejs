@@ -1,0 +1,20 @@
+<%- include('../partials/header') %>
+	<div class="card">
+		<div class="card-body">
+			<h4>Categorias: </h4>
+			<% categories.forEach((category)=> { %>
+				<ul class="list-group">
+					<li class="list-group-item">
+						<a href="/categorias/<%=category.slug%>">
+							<button class="btn btn-primary">
+								<%=category.name%>
+							</button>
+						</a>
+					</li>
+				</ul>
+
+				<% }) %>
+		</div>
+	</div>
+
+	<%- include('../partials/footer') %>

@@ -1,0 +1,22 @@
+<%- include('../partials/header') %>
+
+	<% errors.forEach((err)=> { %>
+		<div class="alert alert-danger">
+			<%= err.text %>
+		</div>
+		<% }); %>
+			<h3>Nova Categoria: </h3>
+			<div class="card">
+				<div class="card-body">
+					<form action="/admin/categorias/add" method="post">
+						<label for="name">Nome:</label>
+						<input type="text" id="name" name="name" placeholder="Nome da categoria" class="form-control">
+						<label for="slug">Slug: </label>
+						<input type="text" id="slug" name="slug" placeholder="Slug da categoria" class="form-control">
+						<br>
+						<button class="btn btn-success" type="submit">Criar Categoria</button>
+					</form>
+				</div>
+			</div>
+
+			<%- include('../partials/footer') %>

@@ -1,0 +1,25 @@
+<%- include('../partials/header') %>
+	<h2>Lista de categorias: </h2>
+	<a href="/admin/categorias/add"><button class="btn btn-success">Nova Categoria</button></a>
+	<hr>
+	<% categories.forEach((category)=> { %>
+		<div class="card mb-3">
+			<div class="card-body">
+				<h4>
+					<%=category.name%>
+				</h4>
+				<small>Slug: <%=category.slug%></small><br>
+				<small>Data de criação: <%= category.date%></small><br>
+				<div class="d-flex">
+					<a href="/admin/categorias/edit/<%=category._id%>"><button class="btn btn-primary">editar</button></a>
+					<form action="/admin/categorias/delete" method="post">
+						<input type="hidden" name="id" value="<%=category._id%>">
+						<button class="btn btn-danger">excluir</button>
+					</form>
+				</div>
+
+			</div>
+		</div>
+		<% }); %>
+
+			<%- include('../partials/footer') %>

@@ -1,0 +1,22 @@
+<%- include('../partials/header') %>
+	<% errors.forEach((error)=> { %>
+		<div class="alert alert-danger">
+			<%=error.text%>
+		</div>
+		<% }) %>
+			<h1>Log-in</h1>
+			<form action="/usuario/login" method="post">
+				<div class="card">
+					<div class="card-body">
+						<label for="email" class="form-label" class="form-label">Email: </label>
+						<input type="text" id="email" name="email" class="form-control">
+
+						<label for="password" class="form-label">Senha: </label>
+						<input type="password" id="password" name="password" class="form-control">
+
+						<button type="submit" class="btn btn-primary mt-4">Conectar</button>
+					</div>
+				</div>
+
+			</form>
+			<%- include('../partials/footer') %>

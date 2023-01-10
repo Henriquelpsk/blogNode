@@ -1,0 +1,18 @@
+<%- include('../partials/header') %>
+	<h3>Editar Categoria: </h3>
+	<div class="card">
+		<div class="card-body">
+			<form action="/admin/categorias/edit" method="post">
+				<input type="hidden" name="id" value="<%=category._id%>">
+				<label for="name">Nome:</label>
+				<input type="text" id="name" name="name" placeholder="Nome da categoria" class="form-control"
+					value="<%=category.name%>">
+				<label for="slug">Slug: </label>
+				<input type="text" id="slug" name="slug" placeholder="Slug da categoria" class="form-control"
+					value="<%=category.slug%>">
+				<br>
+				<button class="btn btn-success">Editar Categoria</button>
+			</form>
+		</div>
+	</div>
+	<%- include('../partials/footer') %>
