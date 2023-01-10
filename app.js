@@ -102,7 +102,7 @@ app.get('/404', (req, res) => {
 app.use('/admin', admin);
 app.use('/usuario', user);
 //Others
-const PORT = 8081;
+const PORT = process.env.PORT || 8081;
 app.listen(PORT, () => {
 	console.log('Servidor aberto em: ');
 	console.log('http://localhost:' + PORT);
