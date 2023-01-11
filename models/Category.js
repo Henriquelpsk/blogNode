@@ -14,6 +14,6 @@ const Category = new Schema({
 		type: Date,
 		default: Date.now()
 	}
-})
+});
 
-mongoose.model('categories', Category)
+mongoose.model('categories', Category);

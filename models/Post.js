@@ -20,13 +20,13 @@ const Post = new Schema({
 	},
 	category: {
 		type: Schema.Types.ObjectId,
-		ref: "categories",
+		ref: 'categories',
 		required: true
 	},
 	date: {
 		type: Date,
 		default: Date.now()
 	}
-})
+});
 
-mongoose.model('posts', Post)
+mongoose.model('posts', Post);

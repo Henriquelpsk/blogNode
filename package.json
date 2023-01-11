@@ -1,24 +1,14 @@
 {
   "name": "nodeBlog",
-
   "version": "1.0.0",
-
   "main": "app.js",
-
   "scripts": {
-
     "test": "echo \"Error: no test specified\" && exit 1",
-
     "start": "node app.js"
-
   },
-
   "keywords": [],
-
   "author": "",
-
   "license": "ISC",
-
   "description": "",
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -30,5 +20,8 @@
     "mongoose": "^6.8.3",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.31.0"
   }
 }
