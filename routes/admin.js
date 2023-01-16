@@ -1,178 +1,29 @@
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
-require('../models/Category');
-const Category = mongoose.model('categories');
-require('../models/Post');
-const Post = mongoose.model('posts');
 const { isAdmin } = require('../helpers/isAdm');
+const adminController = require('../controllers/adminController');
 
-router.get('/', isAdmin, (req, res) => {
-	res.render('admin/index');
-});
+router.get('/', isAdmin, adminController.index);
+//rotas de categoria
+router.get('/categorias', isAdmin, adminController.category);
+//Insert
+router.get('/categorias/add', isAdmin, adminController.getNewCategory);
+router.post('/categorias/add', isAdmin, adminController.postNewCategory);
+//Put
+router.get('/categorias/edit/:id', isAdmin, adminController.getEditCategory);
+router.post('/categorias/edit', isAdmin, adminController.postEditCategory);
+//Delete
+router.post('/categorias/delete', isAdmin, adminController.deleteCategory);
 
-router.get('/categorias', isAdmin, (req, res) => {
-	Category.find().sort({ date: 'desc' })
-		.then((categories) => res.render('admin/category.ejs', { categories: categories }))
-		.catch(() => {
-			req.flash('error_msg', 'Houve um erro ao listar as categorias');
-			res.redirect('/admin');
-		});
-});
-
-router.get('/categorias/add', isAdmin, (req, res) => {
-	var errors = [];
-	res.render('admin/formCategory.ejs', { errors: errors });
-});
-
-router.post('/categorias/add', isAdmin, (req, res) => {
-
-	var errors = [];
-
-	if (!req.body.name || typeof req.body.name == 'undefined' || req.body.name == null) {
-		errors.push({ text: 'Nome Inválido' });
-	}
-	if (!req.body.slug || typeof req.body.slug == 'undefined' || req.body.slug == null) {
-		errors.push({ text: 'Slug Inválido' });
-	}
-	if (req.body.name.length < 2) {
-		errors.push({ text: 'Nome da categoria muito pequeno' });
-	}
-
-	if (errors.length > 0) {
-		res.render('admin/formCategory.ejs', { errors: errors });
-	} else {
-		const newCategory = {
-			name: req.body.name,
-			slug: req.body.slug
-		};
-
-		new Category(newCategory).save()
-			.then(() => {
-				req.flash('success_msg', 'Categoria criada com sucesso!');
-				res.redirect('/admin/categorias');
-			}).catch((err) => {
-				req.flash('error_msg', 'Houve um erro ao salvar a categoria!');
-				console.log(err);
-			});
-
-	}
-});
-
-router.get('/categorias/edit/:id', isAdmin, (req, res) => {
-	Category.findOne({ _id: req.params.id }).then((category) => {
-		res.render('admin/editCategory', { category: category });
-	}).catch(() => {
-		req.flash('error_msg', 'Esta categoria não existe');
-		res.redirect('/admin/categorias');
-	});
-});
-
-router.post('/categorias/edit', isAdmin, (req, res) => {
-	Category.findOne({ _id: req.body.id }).then((category) => {
-		category.name = req.body.name;
-		category.slug = req.body.slug;
-
-		category.save().then(() => {
-			req.flash('success_msg', 'Categoria editada com sucesso!');
-			res.redirect('/admin/categorias');
-		}).catch(() => {
-			req.flash('error_msg', 'Erro ao atualizar categoria');
-			res.redirect('/admin/categorias');
-		});
-	});
-});
-
-router.post('/categorias/delete', isAdmin, (req, res) => {
-	Category.deleteOne({ _id: req.body.id }).then(() => {
-		req.flash('success_msg', 'Categoria deletada com sucesso!');
-		res.redirect('/admin/categorias');
-	}).catch(() => {
-		req.flash('error_msg', 'Erro ao deletar categoria');
-		res.redirect('/admin/categorias');
-	});
-});
-
-router.get('/postagens', isAdmin, (req, res) => {
-	Post.find().populate('category').sort({ date: 'desc' }).then((posts) => {
-		res.render('admin/posts', { posts: posts });
-	}).catch(() => {
-		req.flash('error_msg', 'Houve um erro ao carregar as postagens');
-	});
-});
-
-router.get('/postagens/add', isAdmin, (req, res) => {
-	var errors = [];
-	Category.find().then((categories) => {
-		res.render('admin/formPosts', { categories: categories, errors: errors });
-	}).catch(() => {
-		req.flash('error_msg', 'Houve um erro ao carregar o formulário');
-	});
-});
-
-router.post('/postagens/add', isAdmin, (req, res) => {
-	const newPost = {
-		title: req.body.title,
-		slug: req.body.slug,
-		description: req.body.description,
-		content: req.body.content,
-		category: req.body.category
-	};
-
-	new Post(newPost).save().then(() => {
-		req.flash('success_msg', 'Post criado com sucesso!');
-		res.redirect('/admin/postagens');
-	}).catch(() => {
-		req.flash('error_msg', 'Erro ao criar postagem');
-		res.redirect('admin/postagens');
-	});
-});
-
-router.get('/postagens/edit/:id', isAdmin, (req, res) => {
-	let errors = [];
-	Post.findOne({ _id: req.params.id }).then((post) => {
-
-		Category.find().then((categories) => {
-			res.render('admin/editPosts', { categories: categories, post: post, errors: errors });
-
-		}).catch(() => {
-			req.flash('error_msg', 'Houve um erro ao listar as categorias');
-			res.redirect('/admin/postagens');
-		});
-
-	}).catch(() => {
-		req.flash('error_msg', 'Houve uma falha ao editar');
-		res.redirect('/admin/postagens');
-	});
-});
-
-router.post('/postagens/edit', isAdmin, (req, res) => {
-	Post.findOne({ _id: req.body.id }).then((post) => {
-
-		post.title = req.body.title;
-		post.slug = req.body.slug;
-		post.description = req.body.description;
-		post.content = req.body.content;
-		post.category = req.body.category;
-
-		post.save().then(() => {
-			req.flash('success_msg', 'Post editado com sucesso!');
-			res.redirect('/admin/postagens');
-		}).catch((err) => {
-			req.flash('error_msg', 'Houve uma falha ao editar' + err);
-			res.redirect('/admin/postagens');
-		});
-	});
-});
-
-router.post('/postagens/delete', isAdmin, (req, res) => {
-	Post.deleteOne({ _id: req.body.id }).then(() => {
-		req.flash('success_msg', 'Postagem deletada com sucesso!');
-		res.redirect('/admin/postagens');
-	}).catch(() => {
-		req.flash('error_msg', 'Houve uma falha ao deletar');
-		res.redirect('/admin/postagens');
-	});
-});
+//rotas de posts
+router.get('/postagens', isAdmin, adminController.post);
+//Insert
+router.get('/postagens/add', isAdmin, adminController.getNewPost);
+router.post('/postagens/add', isAdmin, adminController.postNewPost);
+//Update
+router.get('/postagens/edit/:id', isAdmin, adminController.getEditPost);
+router.post('/postagens/edit', isAdmin, adminController.postEditPost);
+//Delete
+router.post('/postagens/delete', isAdmin, adminController.deletePost);
 
 module.exports = router;
